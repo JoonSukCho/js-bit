@@ -1,0 +1,61 @@
+{
+    "parser": "@typescript-eslint/parser",    
+    "parserOptions": {
+      "ecmaVersion": 2020,
+      "sourceType": "module",
+      "ecmaFeatures": {
+        "jsx": true
+      }
+    },
+    "env": { 
+      "browser": true,
+      "node": true,
+      "es6": true,
+      "jest": true
+    },
+    "extends": [  
+      "airbnb"
+    ],
+    "plugins": [   
+      "import",
+      "react-hooks",
+      "jsx-a11y"
+    ],
+    "rules": { 
+      "arrow-parens": "off", 
+      "jsx-a11y/label-has-associated-control": "off",
+      "jsx-a11y/anchor-is-valid": "off",
+      "no-console": "off", 
+      "no-underscore-dangle": "off",
+      "no-unused-vars" : "warn", 
+      "no-var": "warn", 
+      "camelcase" : "off", 
+      "prefer-const" : "warn", 
+      "react/forbid-prop-types": "off",
+      "react/jsx-filename-extension": "off", 
+      "react/jsx-one-expression-per-line": "off",
+      "react/prop-types": "off", 
+      "object-curly-newline": "off",
+      "linebreak-style": "off",
+      "no-param-reassign": "off",
+      "quotes": "off",
+      "import/no-unresolved": "off",
+      "import/order": "off",
+      "arrow-body-style": "off",
+      "implicit-arrow-linebreak": "off",
+      "template-curly-spacing": "off", // typescript 도입 후 eslint 작동 안하는 이슈 때문,
+      "indent": "off", // typescript 도입 후 eslint 작동 안하는 이슈 때문,
+      "max-classes-per-file": "off",
+      "import/prefer-default-export": "off",
+      "no-return-await": "off",
+      "key-spacing": "off",
+      "no-multi-spaces": "off",
+      "react/jsx-props-no-spreading": "off", // element props에 spread 문법 사용하지 않도록,
+      "lines-between-class-members": "off", // class의 멤버 변수는 한 칸씩 띄워져야 한다
+      "no-shadow": "off",
+      "class-methods-use-this": "off",
+      "no-plusplus": ["error", { "allowForLoopAfterthoughts": true }],
+      "new-cap": "off",
+      "import/extensions": "off"
+    }
+  }
