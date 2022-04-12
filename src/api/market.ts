@@ -10,8 +10,12 @@ export interface MarketListResponse {
   data: MarketItem[];
 }
 
-export async function apiGetMarketList(): Promise<MarketListResponse> {
-  const response = await axios.get('https://api.upbit.com/v1/market/all');
+const marketApi = {
+  async getMarketList(): Promise<MarketListResponse> {
+    const response = await axios.get('https://api.upbit.com/v1/market/all');
 
-  return response;
-}
+    return response;
+  },
+};
+
+export default marketApi;

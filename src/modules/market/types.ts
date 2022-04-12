@@ -7,5 +7,6 @@ export const MARKET_LIST_FAILURE = 'MARKET_LIST_FAILURE' as const;
 export interface MarketListState {
   marketList: MarketItem[];
   loading: boolean;
+  done: boolean;
   error: string | null;
 }

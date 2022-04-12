@@ -10,6 +10,7 @@ import { ActionRequest } from 'modules/market/actions';
 export const initialState: MarketListState = {
   marketList: [],
   loading: false,
+  done: false,
   error: '',
 };
 
@@ -18,9 +19,11 @@ const market = (state: MarketListState = initialState, action: ActionRequest) =>
     switch (action.type) {
       case MARKET_LIST_REQUEST:
         draft.loading = true;
+        draft.done = false;
         break;
       case MARKET_LIST_SUCCESS:
         draft.loading = false;
+        draft.done = true;
         draft.marketList = action.payload.data;
         break;
       case MARKET_LIST_FAILURE:

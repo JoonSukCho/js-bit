@@ -4,11 +4,11 @@ import {
   getMarketListSuccess,
   getMarketListFailure,
 } from 'modules/market/actions';
-import { apiGetMarketList, MarketListResponse } from 'api/market';
+import marketApi, { MarketListResponse } from 'api/market';
 
 function* getMarketListSaga() {
   try {
-    const response: MarketListResponse = yield call(apiGetMarketList);
+    const response: MarketListResponse = yield call(marketApi.getMarketList);
     const krMarketList = response.data.filter((list) =>
       list.market.includes('KRW-'),
     );

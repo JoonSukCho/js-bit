@@ -5,6 +5,7 @@ import {
   MARKET_LIST_FAILURE,
 } from 'modules/market/types';
 
+// 코인 리스트 가져오기
 export const getMarketList = () => ({
   type: MARKET_LIST_REQUEST,
 });
