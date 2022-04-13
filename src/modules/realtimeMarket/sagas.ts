@@ -8,14 +8,14 @@ import {
   select,
   delay,
 } from 'redux-saga/effects';
-import { MARKET_REAL_TIME_CONNECT } from 'modules/realtimeMarket/types';
+import { CONNECT_REAL_TIME_MARKET_REQUEST } from 'modules/realtimeMarket/types';
 import {
-  getMarketRealTimeDataSuccess,
-  getMarketRealTimeDataFailure,
+  getRealtimeMarketSuccess,
+  getRealtimeMarketFailure,
   ActionRequest,
-  getMarketRealTimeData,
+  getRealtimeMarket,
 } from 'modules/realtimeMarket/actions';
-import { MarketRealTimeResponse } from 'api/realtimeMarket';
+import { RealtimeMarket } from 'api/types/realtimeMarket';
 import { buffers, eventChannel } from 'redux-saga';
 
 const createSocket = () => {
@@ -56,9 +56,7 @@ const connectSocket = ({ socket, connectType, codes, buffer }) => {
   }, buffer || buffers.none());
 };
 
-function* getRealtimeMarketSaga(
-  action: ReturnType<typeof getMarketRealTimeData>,
-) {
+function* getRealtimeMarketSaga(action: ReturnType<typeof getRealtimeMarket>) {
   const socket = yield call(createSocket);
   const clientChannel = yield call(connectSocket, {
     ...action.payload,
@@ -69,7 +67,7 @@ function* getRealtimeMarketSaga(
   while (true) {
     try {
       // flush는 channel에서 리턴하는 모든 버퍼 값들을 다룬다.
-      const bufferData: MarketRealTimeResponse[] = yield flush(clientChannel);
+      const bufferData: RealtimeMarket[] = yield flush(clientChannel);
 
       if (bufferData.length) {
         const sortedObj = {};
@@ -89,18 +87,18 @@ function* getRealtimeMarketSaga(
           (data) => sortedObj[data],
         );
 
-        yield put(getMarketRealTimeDataSuccess(sortedData));
+        yield put(getRealtimeMarketSuccess(sortedData));
       }
 
       yield delay(500); // 500ms 동안 대기
     } catch (error) {
-      yield put(getMarketRealTimeDataFailure(error));
+      yield put(getRealtimeMarketFailure(error));
     }
   }
 }
 
 function* watchRealtimeMarketSaga() {
-  yield takeLatest(MARKET_REAL_TIME_CONNECT, getRealtimeMarketSaga);
+  yield takeLatest(CONNECT_REAL_TIME_MARKET_REQUEST, getRealtimeMarketSaga);
 }
 
 export default function* marketSaga() {

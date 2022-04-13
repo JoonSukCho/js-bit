@@ -1,34 +1,57 @@
 import produce from 'immer';
 import {
-  MARKET_LIST_REQUEST,
-  MARKET_LIST_SUCCESS,
-  MARKET_LIST_FAILURE,
-  MarketListState,
+  LOAD_MARKET_LIST_REQUEST,
+  LOAD_MARKET_LIST_SUCCESS,
+  LOAD_MARKET_LIST_FAILURE,
+  MarketState,
+  LOAD_MARKET_MIN_CANDLE_REQUEST,
+  LOAD_MARKET_MIN_CANDLE_SUCCESS,
+  LOAD_MARKET_MIN_CANDLE_FAILURE,
 } from 'modules/market/types';
 import { ActionRequest } from 'modules/market/actions';
+import { MarketMinuteCandle } from 'api/types/market';
 
-export const initialState: MarketListState = {
+export const initialState: MarketState = {
   marketList: [],
-  loading: false,
-  done: false,
-  error: '',
+  loadMarketListLoading: false,
+  loadMarketListDone: false,
+  loadMarketListError: '',
+
+  marketMinCandle: [] as MarketMinuteCandle,
+  loadMarketMinCandleLoading: false,
+  loadMarketMinCandleDone: false,
+  loadMarketMinCandleError: '',
 };
 
-const market = (state: MarketListState = initialState, action: ActionRequest) =>
+const market = (state: MarketState = initialState, action: ActionRequest) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case MARKET_LIST_REQUEST:
-        draft.loading = true;
-        draft.done = false;
+      case LOAD_MARKET_LIST_REQUEST:
+        draft.loadMarketListLoading = true;
+        draft.loadMarketListDone = false;
         break;
-      case MARKET_LIST_SUCCESS:
-        draft.loading = false;
-        draft.done = true;
+      case LOAD_MARKET_LIST_SUCCESS:
+        draft.loadMarketListLoading = false;
+        draft.loadMarketListDone = true;
         draft.marketList = action.payload.data;
         break;
-      case MARKET_LIST_FAILURE:
-        draft.loading = false;
-        draft.error = action.payload.error;
+      case LOAD_MARKET_LIST_FAILURE:
+        draft.loadMarketListLoading = false;
+        draft.loadMarketListError = action.payload.error;
+        break;
+
+      case LOAD_MARKET_MIN_CANDLE_REQUEST:
+        draft.loadMarketMinCandleLoading = true;
+        draft.loadMarketMinCandleDone = false;
+        break;
+      case LOAD_MARKET_MIN_CANDLE_SUCCESS:
+        draft.loadMarketMinCandleLoading = false;
+        draft.loadMarketMinCandleDone = true;
+        draft.marketMinCandle = action.payload.data;
+        break;
+      case LOAD_MARKET_MIN_CANDLE_FAILURE:
+        draft.loadMarketMinCandleLoading = false;
+        draft.loadMarketMinCandleError = action.payload.error;
         break;
       default:
         return state;

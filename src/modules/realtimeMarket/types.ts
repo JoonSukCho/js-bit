@@ -1,11 +1,14 @@
-import { MarketRealTimeResponse } from 'api/realtimeMarket';
+import { RealtimeMarket } from 'api/types/realtimeMarket';
 
-export const MARKET_REAL_TIME_CONNECT = 'MARKET_REAL_TIME_CONNECT' as const;
-export const MARKET_REAL_TIME_SUCCESS = 'MARKET_REAL_TIME_SUCCESS' as const;
-export const MARKET_REAL_TIME_FAILURE = 'MARKET_REAL_TIME_FAILURE' as const;
+export const CONNECT_REAL_TIME_MARKET_REQUEST =
+  'CONNECT_REAL_TIME_MARKET_REQUEST' as const;
+export const CONNECT_REAL_TIME_MARKET_SUCCESS =
+  'CONNECT_REAL_TIME_MARKET_SUCCESS' as const;
+export const CONNECT_REAL_TIME_MARKET_FAILURE =
+  'CONNECT_REAL_TIME_MARKET_FAILURE' as const;
 
-export interface MarketRealTimeState {
-  realTimeData: MarketRealTimeResponse[];
+export interface RealtimeMarketState {
+  realTimeMarket: RealtimeMarket[];
   connection: boolean;
   error: string | null;
 }

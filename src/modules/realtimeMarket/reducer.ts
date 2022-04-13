@@ -1,32 +1,32 @@
 import produce from 'immer';
 import {
-  MARKET_REAL_TIME_CONNECT,
-  MARKET_REAL_TIME_SUCCESS,
-  MARKET_REAL_TIME_FAILURE,
-  MarketRealTimeState,
+  CONNECT_REAL_TIME_MARKET_REQUEST,
+  CONNECT_REAL_TIME_MARKET_SUCCESS,
+  CONNECT_REAL_TIME_MARKET_FAILURE,
+  RealtimeMarketState,
 } from 'modules/realtimeMarket/types';
 import { ActionRequest } from 'modules/realtimeMarket/actions';
 
-export const initialState: MarketRealTimeState = {
-  realTimeData: [],
+export const initialState: RealtimeMarketState = {
+  realTimeMarket: [],
   connection: false,
   error: '',
 };
 
 const realtimeMarket = (
-  state: MarketRealTimeState = initialState,
+  state: RealtimeMarketState = initialState,
   action: ActionRequest,
 ) =>
   produce(state, (draft) => {
     switch (action.type) {
-      case MARKET_REAL_TIME_CONNECT:
+      case CONNECT_REAL_TIME_MARKET_REQUEST:
         draft.connection = false;
         break;
-      case MARKET_REAL_TIME_SUCCESS:
+      case CONNECT_REAL_TIME_MARKET_SUCCESS:
         draft.connection = true;
-        draft.realTimeData = action.payload.response;
+        draft.realTimeMarket = action.payload.data;
         break;
-      case MARKET_REAL_TIME_FAILURE:
+      case CONNECT_REAL_TIME_MARKET_FAILURE:
         draft.connection = false;
         draft.error = action.payload.error;
         break;
