@@ -1,9 +1,9 @@
-export interface MarketRealTimeRequestParams {
+export interface RealtimeMarketReqParams {
   connectType: 'ticker' | 'trade' | 'orderbook'; // 현재가 - ticker, 체결 - trade, 호가 - orderbook
   codes: string[];
 }
 
-export interface MarketRealTimeResponse {
+export interface RealtimeMarket {
   acc_ask_volume: number; // 누적 매도량
   acc_bid_volume: number; // 누적 매수량
   acc_trade_price: number; // 누적 거래대금
