@@ -1,6 +1,6 @@
 // 마켓 리스트
-export type MarketList = MarketListItem[];
-export interface MarketListItem {
+export type MarketList = MarketItem[];
+export interface MarketItem {
   market: string;
   korean_name: string;
   english_name: string;

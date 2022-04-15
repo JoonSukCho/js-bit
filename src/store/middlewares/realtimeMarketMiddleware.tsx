@@ -2,6 +2,7 @@
 // services/market 호출 처럼 진행해보자
 
 import { Middleware } from 'redux';
+import { RootState } from 'store/config';
 import { realtimeMarketActions } from 'store/slices/realtimeMarketSlice';
 
 const realtimeMarketMiddleware: Middleware = (store) => {
@@ -28,6 +29,7 @@ const realtimeMarketMiddleware: Middleware = (store) => {
           const enc = new TextDecoder('utf-8');
           const arr = new Uint8Array(event.data);
           const parsedData = JSON.parse(enc.decode(arr));
+          // const state: RootState = store.getState();
 
           store.dispatch(realtimeMarketActions.receiveData(parsedData));
         } catch (error) {

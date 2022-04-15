@@ -1,9 +1,10 @@
-import { createSlice, PayloadAction } from '@reduxjs/toolkit';
+import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   RealtimeMarket,
   RealtimeMarketItem,
   RealtimeMarketReqParams,
 } from 'services/types/realtimeMarket';
+import { RootState } from 'store/config';
 
 interface RealtimeMarketState {
   data: RealtimeMarketItem;
@@ -39,5 +40,12 @@ export const realtimeMarketSlice = createSlice({
 });
 
 export const realtimeMarketActions = realtimeMarketSlice.actions;
+
+export const realtimeMarketEqualityFn = (
+  prev: RealtimeMarketState,
+  market: string,
+): boolean => {
+  return prev.data.code !== market;
+};
 
 export default realtimeMarketSlice;
