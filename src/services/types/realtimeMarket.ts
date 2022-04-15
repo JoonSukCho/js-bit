@@ -3,7 +3,7 @@ export interface RealtimeMarketReqParams {
   codes: string[];
 }
 
-export interface RealtimeMarket {
+export interface RealtimeMarketItem {
   acc_ask_volume: number; // 누적 매도량
   acc_bid_volume: number; // 누적 매수량
   acc_trade_price: number; // 누적 거래대금
@@ -38,3 +38,5 @@ export interface RealtimeMarket {
   trade_volume: number; //
   type: string; // 타입 (현재가 - ticker, 체결 - trade, 호가 - orderbook)
 }
+
+export type RealtimeMarket = RealtimeMarketItem[];
