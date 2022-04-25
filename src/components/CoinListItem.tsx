@@ -13,11 +13,16 @@ import {
   convertChangeRate,
 } from 'utils/market';
 
-interface SCoinRowStyleProps {
+interface SContainerStyleProps {
   isSelected: boolean;
 }
 
-const CoinRow = ({
+interface SListItemStyleProps {
+  align?: string;
+  literal?: string;
+}
+
+const CoinListItem = ({
   code,
   change,
   change_rate,
@@ -51,23 +56,27 @@ const CoinRow = ({
   }, []);
 
   return (
-    <S.TableRow onClick={selectMarket} isSelected={selectedMarket === code}>
-      <S.TableCell>{korean_name}</S.TableCell>
-      <S.TableCell>{trade_price.toLocaleString()}</S.TableCell>
-      <S.TableCell>{`${literal} ${changeRate}%`}</S.TableCell>
-      <S.TableCell>
+    <S.Container onClick={selectMarket} isSelected={selectedMarket === code}>
+      <SE.KoreanName align="left">{korean_name}</SE.KoreanName>
+      <SE.TradePrice literal={literal}>
+        {trade_price.toLocaleString()}
+      </SE.TradePrice>
+      <SE.Change literal={literal}>{`${literal} ${changeRate}%`}</SE.Change>
+      <SE.AccTradePrice>
         {convertAccTradePrice(acc_trade_price_24h).toLocaleString()}
-        백만
-      </S.TableCell>
-    </S.TableRow>
+        <S.PriceUnit>백만</S.PriceUnit>
+      </SE.AccTradePrice>
+    </S.Container>
   );
 };
 
 const S = {
-  TableRow: styled.div<SCoinRowStyleProps>`
-    display: table-row;
+  Container: styled.div<SContainerStyleProps>`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
     cursor: pointer;
-    font-size: 0.78rem;
+    font-size: 0.82rem;
+    border-bottom: 1px solid #f1f1f4;
 
     &:hover {
       background-color: rgba(167, 182, 255, 0.2);
@@ -76,15 +85,33 @@ const S = {
     ${({ isSelected }) =>
       isSelected &&
       css`
-        font-weight: bold;
         background-color: rgba(167, 182, 255, 0.5);
       `}
   `,
 
-  TableCell: styled.div`
+  ListItem: styled.div<SListItemStyleProps>`
     display: table-cell;
     padding: 0.75rem 1rem;
+    text-align: ${({ align }) => align || 'right'};
+  `,
+
+  PriceUnit: styled.span`
+    color: #999;
+    font-size: 0.8rem;
   `,
 };
 
-export default React.memo(CoinRow);
+const SE = {
+  KoreanName: styled(S.ListItem)`
+    font-weight: 500;
+  `,
+  TradePrice: styled(S.ListItem)`
+    color: ${({ literal }) => (literal === '+' ? '#c84a31' : '#1261c4')};
+  `,
+  Change: styled(S.ListItem)`
+    color: ${({ literal }) => (literal === '+' ? '#c84a31' : '#1261c4')};
+  `,
+  AccTradePrice: styled(S.ListItem)``,
+};
+
+export default React.memo(CoinListItem);

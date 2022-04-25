@@ -4,7 +4,7 @@ import axios from 'axios';
 
 import Header from 'components/Header';
 import Article from 'components/Article';
-import CoinTable from 'components/CoinTable';
+import CoinList from 'components/CoinList';
 import CoinSummary from 'components/CoinSummary';
 import CoinQuote from 'components/CoinQuote';
 import CoinTrade from 'components/CoinTrade';
@@ -27,7 +27,7 @@ const Home = () => {
           </S.CoinOrder>
         </S.CoinDetailSection>
         <S.CoinTableSection>
-          <CoinTable />
+          <CoinList />
         </S.CoinTableSection>
       </S.Container>
       <footer>footer</footer>

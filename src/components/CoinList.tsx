@@ -3,9 +3,9 @@ import { useAppSelector } from 'store/config';
 import { marketListSelector } from 'store/slices/marketSlice';
 import styled from 'styled-components';
 import Article from './Article';
-import CoinRow from './CoinRow';
+import CoinListItem from './CoinListItem';
 
-const CoinTable = () => {
+const CoinList = () => {
   const { marketList, loadMarketListLoading, loadMarketListDone } =
     useAppSelector(marketListSelector);
 
@@ -28,19 +28,17 @@ const CoinTable = () => {
 
   return (
     <S.Container>
-      <S.Table>
-        <S.TableHeader>
-          <S.TableCell>한글명</S.TableCell>
-          <S.TableCell>현재가</S.TableCell>
-          <S.TableCell>전일대비</S.TableCell>
-          <S.TableCell>거래대금</S.TableCell>
-        </S.TableHeader>
-        <div style={{ overflow: 'auto', height: 705, width: '100%' }}>
-          {sortedRealtimeMarketTickerList.map((ticker) => (
-            <CoinRow key={ticker.code} {...ticker} />
-          ))}
-        </div>
-      </S.Table>
+      <S.ListHeader>
+        <S.ListHeaderItem>한글명</S.ListHeaderItem>
+        <S.ListHeaderItem>현재가</S.ListHeaderItem>
+        <S.ListHeaderItem>전일대비</S.ListHeaderItem>
+        <S.ListHeaderItem>거래대금</S.ListHeaderItem>
+      </S.ListHeader>
+      <S.ListBody>
+        {sortedRealtimeMarketTickerList.map((ticker) => (
+          <CoinListItem key={ticker.code} {...ticker} />
+        ))}
+      </S.ListBody>
     </S.Container>
   );
 };
@@ -49,10 +47,29 @@ const S = {
   Container: styled(Article)`
     width: 100%;
     height: 100%;
-    max-width: 420px;
     box-sizing: border-box;
     background: #fff;
     padding: 1rem 0;
+
+    @media (min-width: 1024px) {
+      max-width: 470px;
+    }
+  `,
+  ListHeader: styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    font-size: 0.82rem;
+  `,
+  ListHeaderItem: styled.div`
+    display: table-cell;
+    padding: 0.75rem 1rem;
+    text-align: center;
+    color: #666;
+  `,
+  ListBody: styled.div`
+    width: 100%;
+    height: 705px;
+    overflow: auto;
 
     &::-webkit-scrollbar {
       width: 5px;
@@ -75,19 +92,6 @@ const S = {
       background-color: transparent;
     }
   `,
-  Table: styled.div``,
-  TableHeader: styled.div`
-    display: flex;
-    padding: 0.8rem 0;
-    text-align: center;
-  `,
-  TableRow: styled.div`
-    display: table-row;
-  `,
-  TableCell: styled.div`
-    display: table-cell;
-    padding: 0.75rem 1rem;
-  `,
 };
 
-export default React.memo(CoinTable);
+export default React.memo(CoinList);
