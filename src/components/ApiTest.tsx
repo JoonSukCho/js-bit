@@ -8,16 +8,7 @@ import { realtimeMarketActions } from 'store/slices/realtimeMarketSlice';
 
 const ApiTest = () => {
   const dispatch = useAppDispatch();
-  const marketList = useAppSelector((state) => state.market.data);
-
-  const { data: realtimedata, isConnected } = useAppSelector(
-    (state) => state.realtimeMarket,
-    (prev, next) => {
-      const f = marketList.filter((market) => market.market === prev.data.code);
-      // true면 리렌더링을 하지 않음
-      return f.length === 0;
-    },
-  );
+  const marketList = useAppSelector((state) => state.market.marketList);
 
   const getMarketList = async () => {
     dispatch(marketService.getMarketList());

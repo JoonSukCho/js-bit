@@ -53,10 +53,10 @@ const CoinCharts = () => {
     (state) => state.market.selectedMarket.market,
   );
   const {
-    dayCandleData,
-    loadDayCandleDone,
-    loadDayCandleError,
-    loadDayCandleLoading,
+    dayCandles,
+    loadDayCandlesDone,
+    loadDayCandlesError,
+    loadDayCandlesLoading,
   } = useAppSelector(marketDayCandleSelector);
 
   const chartRef = useRef(null);
@@ -91,9 +91,9 @@ const CoinCharts = () => {
   }, [selectedMarket]);
 
   useEffect(() => {
-    if (loadDayCandleDone) {
+    if (loadDayCandlesDone) {
       //
-      const sortedCandleData = [...dayCandleData].reverse();
+      const sortedCandleData = [...dayCandles].reverse();
 
       setOptions((prev) => ({
         ...prev,
@@ -113,17 +113,16 @@ const CoinCharts = () => {
         ],
       }));
     }
-  }, [loadDayCandleDone]);
+  }, [loadDayCandlesDone]);
 
   return (
-    <Article>
-      {loadDayCandleLoading ? (
+    <div>
+      {loadDayCandlesLoading ? (
         <div>loading...</div>
       ) : (
-        // <ECharts ref={chartRef} option={options} style={{ height: '100%' }} />
-        <div>charts</div>
+        <ECharts ref={chartRef} option={options} style={{ height: 600 }} />
       )}
-    </Article>
+    </div>
   );
 };
 

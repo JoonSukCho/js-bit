@@ -7,8 +7,7 @@ import { marketActions, marketListSelector } from 'store/slices/marketSlice';
 
 const HomeContainer = () => {
   const dispatch = useAppDispatch();
-  const { data: marketList, loadMarketListDone } =
-    useAppSelector(marketListSelector);
+  const { marketList, loadMarketListDone } = useAppSelector(marketListSelector);
 
   useEffect(() => {
     // 마켓 정보들 요청
@@ -31,6 +30,15 @@ const HomeContainer = () => {
           codes: marketList.map((market) => market.market),
         }),
       );
+
+      setTimeout(() => {
+        dispatch(
+          realtimeMarketActions.startConnecting({
+            connectType: 'orderbook',
+            codes: marketList.map((market) => market.market),
+          }),
+        );
+      }, 3000);
     }
   }, [loadMarketListDone]);
 

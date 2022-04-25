@@ -13,6 +13,7 @@ const S = {
   Article: styled.article`
     margin-bottom: 8px;
     background-color: #ffffff;
+    box-shadow: 2px 2px 4px #dee1e7;
   `,
 };
 
