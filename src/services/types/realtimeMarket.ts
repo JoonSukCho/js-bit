@@ -1,9 +1,13 @@
+import { OrderbookUnit } from './market';
+
 export interface RealtimeMarketReqParams {
   connectType: 'ticker' | 'trade' | 'orderbook'; // 현재가 - ticker, 체결 - trade, 호가 - orderbook
   codes: string[];
 }
 
-export interface RealtimeMarketItem {
+// 실시간 현재가 정보
+export type RealtimeMarketTickerList = RealtimeMarketTicker[];
+export interface RealtimeMarketTicker {
   acc_ask_volume: number; // 누적 매도량
   acc_bid_volume: number; // 누적 매수량
   acc_trade_price: number; // 누적 거래대금
@@ -39,4 +43,17 @@ export interface RealtimeMarketItem {
   type: string; // 타입 (현재가 - ticker, 체결 - trade, 호가 - orderbook)
 }
 
-export type RealtimeMarket = RealtimeMarketItem[];
+// 실시간 호가 정보
+export type RealtimeMarketOrderbookList = RealtimeMarketOrderbook[];
+export interface RealtimeMarketOrderbook {
+  type: string;
+  code: string;
+  total_ask_size: number; // 호가 매도 총 잔량
+  total_bid_size: number; // 호가 매수 총 잔략
+  orderbook_units: OrderbookUnit[];
+  ask_price: number;
+  bid_price: number;
+  timestamp: number;
+  ask_size: number;
+  bid_size: number;
+}

@@ -2,7 +2,6 @@
 // services/market 호출 처럼 진행해보자
 
 import { Middleware } from 'redux';
-import { RootState } from 'store/config';
 import { realtimeMarketActions } from 'store/slices/realtimeMarketSlice';
 
 const realtimeMarketMiddleware: Middleware = (store) => {
@@ -20,8 +19,6 @@ const realtimeMarketMiddleware: Middleware = (store) => {
             { type: action.payload.connectType, codes: action.payload.codes },
           ]),
         );
-
-        store.dispatch(realtimeMarketActions.completeConnection());
       };
 
       socket.onmessage = (event) => {
@@ -29,9 +26,20 @@ const realtimeMarketMiddleware: Middleware = (store) => {
           const enc = new TextDecoder('utf-8');
           const arr = new Uint8Array(event.data);
           const parsedData = JSON.parse(enc.decode(arr));
-          // const state: RootState = store.getState();
 
-          store.dispatch(realtimeMarketActions.receiveData(parsedData));
+          if (action.payload.connectType === 'ticker') {
+            store.dispatch(
+              realtimeMarketActions.receiveRealtimeMarketTicker(parsedData),
+            );
+          }
+
+          if (action.payload.connectType === 'orderbook') {
+            store.dispatch(
+              realtimeMarketActions.receiveRealtimeMarketOrderbook(parsedData),
+            );
+          }
+
+          store.dispatch(realtimeMarketActions.completeConnection());
         } catch (error) {
           store.dispatch(realtimeMarketActions.errorConnection(error));
         }

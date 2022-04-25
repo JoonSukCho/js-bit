@@ -1,14 +1,16 @@
 import axios from 'axios';
 import { createAsyncThunk } from '@reduxjs/toolkit';
 import {
-  MarketDayCandle,
+  MarketDayCandleList,
   MarketDayCandleReqParams,
   MarketList,
-  MarketMinCandle,
+  MarketMinCandleList,
   MarketMinCandleReqParams,
-  MarketMonthCandle,
+  MarketMonthCandleList,
   MarketMonthCandleReqParams,
-  MarketWeekCandle,
+  MarketOrderBookItem,
+  MarketOrderbookReqParams,
+  MarketWeekCandleList,
   MarketWeekCandleReqParams,
 } from 'services/types/market';
 
@@ -30,7 +32,7 @@ export const marketService = {
   ),
 
   getMarketMinCandle: createAsyncThunk<
-    MarketMinCandle, // Return type
+    MarketMinCandleList, // Return type
     MarketMinCandleReqParams // First argument type
   >(
     'market/getMarketMinCandle',
@@ -55,7 +57,7 @@ export const marketService = {
   ),
 
   getMarketDayCandle: createAsyncThunk<
-    MarketDayCandle,
+    MarketDayCandleList,
     MarketDayCandleReqParams
   >('market/getMarketDayCandle', async (params, { rejectWithValue }) => {
     try {
@@ -73,7 +75,7 @@ export const marketService = {
   }),
 
   getMarketWeekCandle: createAsyncThunk<
-    MarketWeekCandle,
+    MarketWeekCandleList,
     MarketWeekCandleReqParams
   >('market/getMarketWeekCandle', async (params, { rejectWithValue }) => {
     try {
@@ -91,7 +93,7 @@ export const marketService = {
   }),
 
   getMarketMonthCandle: createAsyncThunk<
-    MarketMonthCandle,
+    MarketMonthCandleList,
     MarketMonthCandleReqParams
   >('market/getMarketMonthCandle', async (params, { rejectWithValue }) => {
     try {
@@ -101,6 +103,22 @@ export const marketService = {
           params,
         },
       );
+
+      return response.data;
+    } catch (error) {
+      return rejectWithValue(error.response.data);
+    }
+  }),
+
+  // 호가
+  getMarketOrderbook: createAsyncThunk<
+    MarketOrderBookItem[],
+    MarketOrderbookReqParams
+  >('market/getMarketOrderbook', async (params, { rejectWithValue }) => {
+    try {
+      const response = await axios.get(`https://api.upbit.com/v1/orderbook`, {
+        params,
+      });
 
       return response.data;
     } catch (error) {
