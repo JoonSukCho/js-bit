@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import Home from 'layout/Home';
 import { useAppDispatch, useAppSelector } from 'store/config';
-import { realtimeMarketActions } from 'store/slices/realtimeMarketSlice';
+import { rtmTickerActions } from 'store/slices/rtmTickerSlice';
 import { marketService } from 'services/market';
 import { marketActions, marketListSelector } from 'store/slices/marketSlice';
 
@@ -25,20 +25,10 @@ const HomeContainer = () => {
 
       // 실시간 마켓 데이터 소켓 연결
       dispatch(
-        realtimeMarketActions.startConnecting({
-          connectType: 'ticker',
+        rtmTickerActions.startConnect({
           codes: marketList.map((market) => market.market),
         }),
       );
-
-      setTimeout(() => {
-        dispatch(
-          realtimeMarketActions.startConnecting({
-            connectType: 'orderbook',
-            codes: marketList.map((market) => market.market),
-          }),
-        );
-      }, 3000);
     }
   }, [loadMarketListDone]);
 

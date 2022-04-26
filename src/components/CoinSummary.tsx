@@ -9,7 +9,7 @@ import {
   convertAccTradePrice,
   convertChangeRate,
 } from 'utils/market';
-import { selectedRtmSummarySelector } from 'store/slices/realtimeMarketSlice';
+import { selectedRtmSummarySelector } from 'store/slices/rtmTickerSlice';
 import { shallowEqual } from 'react-redux';
 
 interface CoinNameStyleProps {

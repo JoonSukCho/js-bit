@@ -2,32 +2,26 @@ import { createSelector, createSlice, PayloadAction } from '@reduxjs/toolkit';
 import {
   RealtimeMarketTicker,
   RealtimeMarketReqParams,
-  RealtimeMarketOrderbook,
   RealtimeMarketTickerList,
 } from 'services/types/realtimeMarket';
 import { RootState } from 'store/config';
 
-interface RealtimeMarketState {
-  realtimeMarketTickerList: RealtimeMarketTickerList;
-  realtimeMarketOrderbook: RealtimeMarketOrderbook;
+interface RtmTickerState {
+  rtmTickerList: RealtimeMarketTickerList;
   isConnected: boolean;
   connectionError: string;
 }
-const initialState: RealtimeMarketState = {
-  realtimeMarketTickerList: [],
-  realtimeMarketOrderbook: {} as RealtimeMarketOrderbook,
+const initialState: RtmTickerState = {
+  rtmTickerList: [],
   isConnected: false,
   connectionError: '',
 };
 
-export const realtimeMarketSlice = createSlice({
-  name: 'realtimeMarket',
+export const rtmTickerSlice = createSlice({
+  name: 'realtimeMarketTicker',
   initialState,
   reducers: {
-    startConnecting: (
-      state,
-      action: PayloadAction<RealtimeMarketReqParams>,
-    ) => {
+    startConnect: (state, action: PayloadAction<RealtimeMarketReqParams>) => {
       return;
     },
     completeConnection: (state) => {
@@ -36,42 +30,31 @@ export const realtimeMarketSlice = createSlice({
     errorConnection: (state, action) => {
       state.connectionError = action.payload;
     },
-    receiveRealtimeMarketTicker: (
-      state,
-      action: PayloadAction<RealtimeMarketTicker>,
-    ) => {
+    receiveRtmTicker: (state, action: PayloadAction<RealtimeMarketTicker>) => {
       if (
-        state.realtimeMarketTickerList
+        state.rtmTickerList
           .map((ticker) => ticker.code)
           .includes(action.payload.code)
       ) {
         // ADD
-        state.realtimeMarketTickerList = state.realtimeMarketTickerList.map(
-          (ticker) => {
-            if (ticker.code === action.payload.code) {
-              return action.payload;
-            } else {
-              return ticker;
-            }
-          },
-        );
+        state.rtmTickerList = state.rtmTickerList.map((ticker) => {
+          if (ticker.code === action.payload.code) {
+            return action.payload;
+          } else {
+            return ticker;
+          }
+        });
       } else {
-        state.realtimeMarketTickerList.push(action.payload);
+        state.rtmTickerList.push(action.payload);
       }
-    },
-    receiveRealtimeMarketOrderbook: (
-      state,
-      action: PayloadAction<RealtimeMarketOrderbook>,
-    ) => {
-      state.realtimeMarketOrderbook = action.payload;
     },
   },
 });
 
-export const realtimeMarketActions = realtimeMarketSlice.actions;
+export const rtmTickerActions = rtmTickerSlice.actions;
 
 export const selectedRtmSummarySelector = createSelector(
-  (state: RootState) => state.realtimeMarket.realtimeMarketTickerList,
+  (state: RootState) => state.rtmTicker.rtmTickerList,
   (state: RootState) => state.market.selectedMarket,
   (realtimeMarketTickerList, selectedMarket) => {
     const filtered = realtimeMarketTickerList.filter(
@@ -98,4 +81,4 @@ export const selectedRtmSummarySelector = createSelector(
   },
 );
 
-export default realtimeMarketSlice;
+export default rtmTickerSlice;

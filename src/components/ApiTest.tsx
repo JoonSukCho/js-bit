@@ -4,7 +4,7 @@ import Article from './Article';
 
 import { useAppDispatch, useAppSelector } from 'store/config';
 import { marketService } from 'services/market';
-import { realtimeMarketActions } from 'store/slices/realtimeMarketSlice';
+import { rtmTickerActions } from 'store/slices/rtmTickerSlice';
 
 const ApiTest = () => {
   const dispatch = useAppDispatch();
@@ -25,8 +25,7 @@ const ApiTest = () => {
 
   const getRealtimeMarket = async () => {
     dispatch(
-      realtimeMarketActions.startConnecting({
-        connectType: 'ticker',
+      rtmTickerActions.startConnect({
         codes: marketList.map((market) => market.market),
       }),
     );

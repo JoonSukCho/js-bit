@@ -1,13 +1,16 @@
 import { TypedUseSelectorHook, useDispatch, useSelector } from 'react-redux';
 import { combineReducers, configureStore } from '@reduxjs/toolkit';
 import logger from './middlewares/loggerMiddleware';
-import realtimeMarketMiddleware from './middlewares/realtimeMarketMiddleware';
+import rtmTickerMiddleware from './middlewares/rtmTickerMiddleware';
 import marketSlice from './slices/marketSlice';
-import realtimeMarketSlice from './slices/realtimeMarketSlice';
+import rtmTickerSlice from './slices/rtmTickerSlice';
+import rtmOrderbookMiddleware from './middlewares/rtmOrderbookMiddleware';
+import rtmOrderbookSlice from './slices/rtmOrderbookSlice';
 
 const rootReducer = combineReducers({
   market: marketSlice.reducer,
-  realtimeMarket: realtimeMarketSlice.reducer,
+  rtmTicker: rtmTickerSlice.reducer,
+  rtmOrderbook: rtmOrderbookSlice.reducer,
 });
 
 const initialState = {};
@@ -15,7 +18,11 @@ const initialState = {};
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([realtimeMarketMiddleware, logger]),
+    getDefaultMiddleware().concat([
+      rtmTickerMiddleware,
+      rtmOrderbookMiddleware,
+      logger,
+    ]),
   devTools: process.env.NODE_ENV !== 'production',
   preloadedState: initialState,
   enhancers: (defaultEnhancers) => [...defaultEnhancers],

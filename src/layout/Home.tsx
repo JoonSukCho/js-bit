@@ -1,34 +1,28 @@
 import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
-import axios from 'axios';
 
 import Header from 'components/Header';
 import Article from 'components/Article';
 import CoinList from 'components/CoinList';
 import CoinSummary from 'components/CoinSummary';
-import CoinQuote from 'components/CoinQuote';
+import CoinOrderList from 'components/CoinOrderList';
 import CoinTrade from 'components/CoinTrade';
-import { useAppSelector } from 'store/config';
 
 const Home = () => {
-  const isConnected = useAppSelector(
-    (state) => state.realtimeMarket.isConnected,
-  );
-
   return (
     <>
       <Header />
       <S.Container>
         <S.CoinDetailSection>
           <CoinSummary />
-          <S.CoinOrder>
-            <CoinQuote />
+          <S.CoinOrderContainer>
+            <CoinOrderList />
             <CoinTrade />
-          </S.CoinOrder>
+          </S.CoinOrderContainer>
         </S.CoinDetailSection>
-        <S.CoinTableSection>
+        <S.CoinListSection>
           <CoinList />
-        </S.CoinTableSection>
+        </S.CoinListSection>
       </S.Container>
       <footer>footer</footer>
     </>
@@ -50,10 +44,10 @@ const S = {
   `,
   CoinDetailSection: styled.section`
     display: grid;
-    grid-template-rows: 2fr 1fr;
+    grid-template-rows: 1fr 1fr;
     min-height: 1200px;
   `,
-  CoinTableSection: styled.section`
+  CoinListSection: styled.section`
     position: sticky;
     height: 800px;
     top: 88px; // Container의 margin-top + padding-top
@@ -62,11 +56,16 @@ const S = {
       position: static;
     }
   `,
-  CoinOrder: styled.div`
+  CoinOrderContainer: styled.div`
     display: grid;
     grid-template-columns: 1fr 1fr;
     grid-gap: 10px;
     margin-bottom: 10px;
+
+    @media (max-width: 1024px) {
+      display: flex;
+      flex-direction: column;
+    }
   `,
 };
 

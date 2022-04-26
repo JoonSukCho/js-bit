@@ -26,9 +26,10 @@ const logger = createLogger({
   predicate: (getState, action) => {
     // log를 남기고 싶지 않은 action은 아래 배열에 추가
     const dontLogActions = [
-      'realtimeMarket/receiveRealtimeMarketTicker',
-      'realtimeMarket/receiveRealtimeMarketOrderbook',
-      'realtimeMarket/completeConnection',
+      'realtimeMarketTicker/receiveRtmTicker',
+      'realtimeMarketOrderbook/receiveRtmOrderbook',
+      'realtimeMarketTicker/completeConnection',
+      'realtimeMarketOrderbook/completeConnection',
     ];
 
     return !dontLogActions.includes(action.type);

@@ -1,7 +1,6 @@
 import { OrderbookUnit } from './market';
 
 export interface RealtimeMarketReqParams {
-  connectType: 'ticker' | 'trade' | 'orderbook'; // 현재가 - ticker, 체결 - trade, 호가 - orderbook
   codes: string[];
 }
 

@@ -6,6 +6,8 @@ import {
 } from 'services/types/realtimeMarket';
 import { useAppDispatch, useAppSelector } from 'store/config';
 import { marketActions, marketListSelector } from 'store/slices/marketSlice';
+import { rtmOrderbookActions } from 'store/slices/rtmOrderbookSlice';
+import { rtmTickerActions } from 'store/slices/rtmTickerSlice';
 import styled, { css } from 'styled-components';
 import {
   changeLiteral,
@@ -46,6 +48,7 @@ const CoinListItem = ({
   );
 
   const selectMarket = useCallback(() => {
+    // 선택한 마켓 정보 저장
     dispatch(
       marketActions.setSelectMarket({
         market: code,
@@ -73,7 +76,7 @@ const CoinListItem = ({
 const S = {
   Container: styled.div<SContainerStyleProps>`
     display: grid;
-    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-columns: repeat(4, 1fr);
     cursor: pointer;
     font-size: 0.82rem;
     border-bottom: 1px solid #f1f1f4;

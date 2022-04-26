@@ -10,11 +10,9 @@ const CoinList = () => {
     useAppSelector(marketListSelector);
 
   const realtimeMarketTickerList = useAppSelector(
-    (state) => state.realtimeMarket.realtimeMarketTickerList,
+    (state) => state.rtmTicker.rtmTickerList,
   );
-  const isConnected = useAppSelector(
-    (state) => state.realtimeMarket.isConnected,
-  );
+  const isConnected = useAppSelector((state) => state.rtmTicker.isConnected);
 
   const sortedRealtimeMarketTickerList = useMemo(() => {
     if (isConnected) {
