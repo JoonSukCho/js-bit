@@ -78,17 +78,17 @@ const S = {
     display: grid;
     grid-template-columns: repeat(4, 1fr);
     cursor: pointer;
-    font-size: 0.82rem;
+    font-size: 0.8rem;
     border-bottom: 1px solid #f1f1f4;
 
     &:hover {
-      background-color: rgba(167, 182, 255, 0.2);
+      background-color: #f4f5f8;
     }
 
     ${({ isSelected }) =>
       isSelected &&
       css`
-        background-color: rgba(167, 182, 255, 0.5);
+        background-color: #f4f5f8;
       `}
   `,
 

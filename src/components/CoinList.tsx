@@ -6,9 +6,6 @@ import Article from './Article';
 import CoinListItem from './CoinListItem';
 
 const CoinList = () => {
-  const { marketList, loadMarketListLoading, loadMarketListDone } =
-    useAppSelector(marketListSelector);
-
   const realtimeMarketTickerList = useAppSelector(
     (state) => state.rtmTicker.rtmTickerList,
   );
@@ -33,9 +30,13 @@ const CoinList = () => {
         <S.ListHeaderItem>거래대금</S.ListHeaderItem>
       </S.ListHeader>
       <S.ListBody>
-        {sortedRealtimeMarketTickerList.map((ticker) => (
-          <CoinListItem key={ticker.code} {...ticker} />
-        ))}
+        {isConnected ? (
+          sortedRealtimeMarketTickerList.map((ticker) => (
+            <CoinListItem key={ticker.code} {...ticker} />
+          ))
+        ) : (
+          <div>Loading...</div>
+        )}
       </S.ListBody>
     </S.Container>
   );

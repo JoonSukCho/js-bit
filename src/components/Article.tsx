@@ -5,9 +5,18 @@ interface ArticleProps {
   children: React.ReactNode;
 }
 
-const Article = ({ children, ...rest }: ArticleProps) => {
-  return <S.Article {...rest}>{children}</S.Article>;
-};
+const Article = React.forwardRef(
+  (
+    { children, ...rest }: ArticleProps,
+    ref: React.RefObject<HTMLDivElement>,
+  ) => {
+    return (
+      <S.Article ref={ref} {...rest}>
+        {children}
+      </S.Article>
+    );
+  },
+);
 
 const S = {
   Article: styled.article`
