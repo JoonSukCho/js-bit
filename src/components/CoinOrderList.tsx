@@ -11,10 +11,8 @@ const CoinOrderList = () => {
     (state) => state.market.selectedMarket.market,
   );
 
-  const [items] = useState(new Array(30).fill(0));
-
-  const rtmOrderbook = useAppSelector(
-    (state) => state.rtmOrderbook.rtmOrderbook,
+  const { rtmOrderbook, isConnected } = useAppSelector(
+    (state) => state.rtmOrderbook,
   );
 
   // 선택한 마켓 정보로 호가 정보 조회
@@ -33,20 +31,38 @@ const CoinOrderList = () => {
     };
   }, [selectedMarket]);
 
-  console.log(rtmOrderbook);
-
   return (
     <S.Container>
       <S.List>
         <S.ListHeader>
-          <S.ListHeaderItem>매수량</S.ListHeaderItem>
+          <S.ListHeaderItem>매도잔량</S.ListHeaderItem>
           <S.ListHeaderItem>가격</S.ListHeaderItem>
-          <S.ListHeaderItem>매도량</S.ListHeaderItem>
+          <S.ListHeaderItem>매수잔량</S.ListHeaderItem>
         </S.ListHeader>
         <S.ListBody>
-          {items.map((item, index) => (
-            <CoinOrderListItem key={String(index)} />
-          ))}
+          {!isConnected && <div>Loading...</div>}
+          {isConnected &&
+            [...rtmOrderbook.orderbook_units]
+              .reverse()
+              .map((orderbook, idx) => {
+                return (
+                  <CoinOrderListItem
+                    key={String(idx)}
+                    {...orderbook}
+                    type="ask"
+                  />
+                );
+              })}
+          {isConnected &&
+            rtmOrderbook.orderbook_units.map((orderbook, idx) => {
+              return (
+                <CoinOrderListItem
+                  key={String(idx)}
+                  {...orderbook}
+                  type="bid"
+                />
+              );
+            })}
         </S.ListBody>
       </S.List>
     </S.Container>

@@ -27,17 +27,16 @@ export const rtmOrderbookSlice = createSlice({
     stopConnect: () => {
       return;
     },
-    completeConnection: (state) => {
-      state.isConnected = true;
-    },
     errorConnection: (state, action) => {
       state.connectionError = action.payload;
+      state.isConnected = false;
     },
     receiveRtmOrderbook: (
       state,
       action: PayloadAction<RealtimeMarketOrderbook>,
     ) => {
       state.rtmOrderbook = action.payload;
+      state.isConnected = true;
     },
   },
 });

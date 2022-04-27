@@ -24,11 +24,9 @@ export const rtmTickerSlice = createSlice({
     startConnect: (state, action: PayloadAction<RealtimeMarketReqParams>) => {
       return;
     },
-    completeConnection: (state) => {
-      state.isConnected = true;
-    },
     errorConnection: (state, action) => {
       state.connectionError = action.payload;
+      state.isConnected = false;
     },
     receiveRtmTicker: (state, action: PayloadAction<RealtimeMarketTicker>) => {
       if (
@@ -47,6 +45,8 @@ export const rtmTickerSlice = createSlice({
       } else {
         state.rtmTickerList.push(action.payload);
       }
+
+      state.isConnected = true;
     },
   },
 });

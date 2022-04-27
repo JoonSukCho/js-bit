@@ -16,7 +16,7 @@ const rtmOrderbookMiddleware: Middleware = (store) => {
         socket.send(
           JSON.stringify([
             { ticket: 'js-bit' },
-            { type: 'ticker', codes: action.payload.codes },
+            { type: 'orderbook', codes: action.payload.codes },
           ]),
         );
       };
@@ -28,8 +28,6 @@ const rtmOrderbookMiddleware: Middleware = (store) => {
           const parsedData = JSON.parse(enc.decode(arr));
 
           store.dispatch(rtmOrderbookActions.receiveRtmOrderbook(parsedData));
-
-          store.dispatch(rtmOrderbookActions.completeConnection());
         } catch (error) {
           store.dispatch(rtmOrderbookActions.errorConnection(error));
         }

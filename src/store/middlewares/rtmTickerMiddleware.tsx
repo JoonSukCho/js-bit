@@ -28,8 +28,6 @@ const rtmTickerMiddleware: Middleware = (store) => {
           const parsedData = JSON.parse(enc.decode(arr));
 
           store.dispatch(rtmTickerActions.receiveRtmTicker(parsedData));
-
-          store.dispatch(rtmTickerActions.completeConnection());
         } catch (error) {
           store.dispatch(rtmTickerActions.errorConnection(error));
         }
