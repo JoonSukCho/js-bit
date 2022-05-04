@@ -1,10 +1,16 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { EChartOption } from 'echarts';
-import ECharts from 'echarts-for-react';
 import Article from './Article';
 import { useAppDispatch, useAppSelector } from 'store/config';
 import { marketService } from 'services/market';
 import { marketDayCandleSelector } from 'store/slices/marketSlice';
+
+// echarts
+import type { EChartsOption } from 'echarts';
+import EChartsReactCore from 'echarts-for-react/lib/core';
+import * as echarts from 'echarts/core';
+import { CandlestickChart } from 'echarts/charts';
+import { TooltipComponent, GridComponent } from 'echarts/components';
+import { SVGRenderer } from 'echarts/renderers';
 
 /**
  * 캔들 보는법
@@ -60,7 +66,7 @@ const CoinCharts = () => {
   } = useAppSelector(marketDayCandleSelector);
 
   const chartRef = useRef(null);
-  const [options, setOptions] = useState<EChartOption>({
+  const [options, setOptions] = useState<EChartsOption>({
     tooltip: {
       trigger: 'axis',
       axisPointer: {
@@ -115,12 +121,20 @@ const CoinCharts = () => {
     }
   }, [loadDayCandlesDone]);
 
+  echarts.use([SVGRenderer, CandlestickChart, TooltipComponent, GridComponent]);
+
   return (
     <div>
       {loadDayCandlesLoading ? (
         <div>loading...</div>
       ) : (
-        <ECharts ref={chartRef} option={options} style={{ height: 600 }} />
+        <EChartsReactCore
+          echarts={echarts}
+          opts={{ renderer: 'svg' }}
+          ref={chartRef}
+          option={options}
+          style={{ height: 600 }}
+        />
       )}
     </div>
   );
