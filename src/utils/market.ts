@@ -51,5 +51,7 @@ export const convertAccTradePrice = (price: number): number => {
 
 // 전일 대비 등락을 환산하는 함수
 export const convertChangeRate = (changeRate: number): string => {
-  return (changeRate * 100).toFixed(2);
+  return (changeRate * 100).toLocaleString(undefined, {
+    maximumFractionDigits: 2,
+  });
 };

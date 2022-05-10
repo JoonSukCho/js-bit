@@ -18,11 +18,16 @@ const initialState = {};
 export const store = configureStore({
   reducer: rootReducer,
   middleware: (getDefaultMiddleware) =>
-    getDefaultMiddleware().concat([
-      rtmTickerMiddleware,
-      rtmOrderbookMiddleware,
-      logger,
-    ]),
+    process.env.NODE_ENV === 'production'
+      ? getDefaultMiddleware().concat([
+          rtmTickerMiddleware,
+          rtmOrderbookMiddleware,
+        ])
+      : getDefaultMiddleware().concat([
+          rtmTickerMiddleware,
+          rtmOrderbookMiddleware,
+          logger,
+        ]),
   devTools: process.env.NODE_ENV !== 'production',
   preloadedState: initialState,
   enhancers: (defaultEnhancers) => [...defaultEnhancers],

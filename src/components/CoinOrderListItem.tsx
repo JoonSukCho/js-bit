@@ -18,8 +18,14 @@ const CoinOrderListItem = ({
   ask_price,
   type,
 }: OrderBookUnitWithType) => {
-  const toFixedAskSize = useMemo(() => ask_size.toFixed(3), [ask_size]);
-  const toFixedBidSize = useMemo(() => bid_size.toFixed(3), [bid_size]);
+  const toFixedAskSize = useMemo(
+    () => ask_size.toLocaleString(undefined, { maximumFractionDigits: 3 }),
+    [ask_size],
+  );
+  const toFixedBidSize = useMemo(
+    () => bid_size.toLocaleString(undefined, { maximumFractionDigits: 3 }),
+    [bid_size],
+  );
   const askPrice = useMemo(() => ask_price, [ask_price]);
   const bidPrice = useMemo(() => bid_price, [bid_price]);
 

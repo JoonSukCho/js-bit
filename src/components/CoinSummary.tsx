@@ -13,10 +13,6 @@ import {
 import { selectedRtmSummarySelector } from 'store/slices/rtmTickerSlice';
 import { shallowEqual } from 'react-redux';
 
-interface CoinNameStyleProps {
-  market: string;
-}
-
 const CoinSummary = () => {
   const CoinSummaryRef = useRef<HTMLDivElement>(null);
 
@@ -28,6 +24,11 @@ const CoinSummary = () => {
   const selectedRtmSummary = useAppSelector(
     selectedRtmSummarySelector,
     shallowEqual,
+  );
+
+  const selectedMarketCode = useMemo(
+    () => selectedMarket.split('-')[1],
+    [selectedMarket],
   );
 
   useEffect(() => {
@@ -71,9 +72,7 @@ const CoinSummary = () => {
             <>
               <S.CoinNameContainer>
                 <S.CoinImg
-                  src={`https://static.upbit.com/logos/${
-                    selectedMarket.split('-')[1]
-                  }.png`}
+                  src={`https://static.upbit.com/logos/${selectedMarketCode}.png`}
                 />
                 <S.CoinName>{korean_name}</S.CoinName>
                 <S.CoinCode>{selectedMarket}</S.CoinCode>
@@ -96,33 +95,38 @@ const CoinSummary = () => {
                     } ${change_price.toLocaleString()}`}</S.ChangePrice>
                   </div>
                 </S.CoinChangeSummary>
-                <div
-                  style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
-                >
+                <S.CoinPriceSummary>
                   <div>
-                    <p>
+                    <S.SummaryArea>
                       고가
-                      {high_price.toLocaleString()}
-                    </p>
-                    <p>
+                      <S.HighPrice>{high_price.toLocaleString()}</S.HighPrice>
+                    </S.SummaryArea>
+                    <S.SummaryArea>
                       저가
-                      {low_price.toLocaleString()}
-                    </p>
+                      <S.LowPrice>{low_price.toLocaleString()}</S.LowPrice>
+                    </S.SummaryArea>
                   </div>
-                  <div>
-                    <p>
+                  <S.SummaryAreaRightSide>
+                    <S.SummaryArea>
                       거래량(24H)
-                      {acc_trade_volume_24h}
-                    </p>
-                    <p>
+                      <S.AccTradeVolume>
+                        {acc_trade_volume_24h.toLocaleString(undefined, {
+                          maximumFractionDigits: 3,
+                        })}
+                        <S.Suffix>{selectedMarketCode}</S.Suffix>
+                      </S.AccTradeVolume>
+                    </S.SummaryArea>
+                    <S.SummaryArea>
                       거래대금(24H)
-                      {convertAccTradePrice(
-                        acc_trade_price_24h,
-                      ).toLocaleString()}
-                      백만
-                    </p>
-                  </div>
-                </div>
+                      <S.Price>
+                        {acc_trade_price_24h.toLocaleString(undefined, {
+                          maximumFractionDigits: 3,
+                        })}
+                        <S.Suffix>KRW</S.Suffix>
+                      </S.Price>
+                    </S.SummaryArea>
+                  </S.SummaryAreaRightSide>
+                </S.CoinPriceSummary>
               </S.CoinSummaryContainer>
               <CoinCharts />
             </>
@@ -167,10 +171,69 @@ const S = {
     grid-template-columns: 1fr 1fr;
     border-bottom: 1px solid #d4d6dc;
     padding: 18px 20px 14px;
+
+    @media (max-width: 1024px) {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      gap: 1rem 0;
+    }
   `,
   CoinChangeSummary: styled.div`
     display: flex;
     flex-direction: column;
+  `,
+  CoinPriceSummary: styled.div`
+    display: grid;
+    @media (min-width: 1024px) {
+      grid-template-columns: 1fr 1fr;
+    }
+
+    @media (max-width: 1024px) {
+      grid-template-rows: 1fr 1fr;
+    }
+  `,
+  SummaryArea: styled.p`
+    display: grid;
+    grid-template-columns: 1fr 2fr;
+    font-size: 0.82rem;
+    margin-top: 0;
+    margin-bottom: 9px;
+    padding-bottom: 9px;
+
+    &:first-child {
+      border-bottom: 1px solid #e3e5ec;
+    }
+  `,
+  SummaryAreaRightSide: styled.div`
+    @media (min-width: 1024px) {
+      margin-left: 20px;
+    }
+  `,
+  AccTradeVolume: styled.span`
+    font-size: 0.9rem;
+    text-align: right;
+  `,
+  HighPrice: styled.span`
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: right;
+    color: #c84a31;
+  `,
+  LowPrice: styled.span`
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: right;
+    color: #1261c4;
+  `,
+  Price: styled.span`
+    text-align: right;
+    letter-spacing: -0.05em;
+  `,
+  Suffix: styled.span`
+    font-size: 0.75rem;
+    color: #999;
+    margin-left: 2px;
   `,
   TradePrice: styled.span`
     font-size: 2rem;

@@ -85,6 +85,23 @@ const CoinCharts = () => {
     ],
   });
 
+  const [resizeDetector, setResizeDetector] = useState(null);
+
+  useEffect(() => {
+    window.addEventListener('resize', () => {
+      setResizeDetector(!resizeDetector);
+    });
+  }, []);
+
+  useEffect(() => {
+    console.log(echarts.getInstanceById(chartRef.current));
+    const chart =
+      chartRef.current && echarts.getInstanceByDom(chartRef.current);
+    if (chart) {
+      chart.resize();
+    }
+  }, [resizeDetector]);
+
   useEffect(() => {
     if (selectedMarket.length > 0) {
       dispatch(

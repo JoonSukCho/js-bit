@@ -7,7 +7,8 @@ function App() {
   return (
     <div className="App">
       <GlobalStyle />
-      <BrowserRouter>
+      {/* Github Page 배포를 위해 basename 설정 */}
+      <BrowserRouter basename="/js-bit">
         <Routes>
           <Route path="/" element={<HomeContainer />} />
         </Routes>
