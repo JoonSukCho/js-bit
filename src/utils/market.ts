@@ -1,5 +1,7 @@
 // 코인 계산 관련 util 함수
 
+type LiteralType = '+' | '-' | '';
+
 // MA(가격 이동 평균) 계산 함수
 export const calculateMA = (dayCount: number, data: number[]) => {
   const result = [];
@@ -20,11 +22,23 @@ export const calculateMA = (dayCount: number, data: number[]) => {
 };
 
 // change에 따라 등호 반전 여부 계산 함수
-export const changeLiteral = (change: string): string => {
+export const changeLiteral = (change: string): LiteralType => {
   if (change === 'RISE') {
     return '+';
   } else if (change === 'FALL') {
     return '-';
+  }
+
+  return '';
+};
+
+export const getFontColorClass = (
+  change: LiteralType,
+): 'text-red' | 'text-blue' | '' => {
+  if (change === '+') {
+    return 'text-red';
+  } else if (change === '-') {
+    return 'text-blue';
   }
 
   return '';

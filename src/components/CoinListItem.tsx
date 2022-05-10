@@ -10,6 +10,7 @@ import { rtmOrderbookActions } from 'store/slices/rtmOrderbookSlice';
 import { rtmTickerActions } from 'store/slices/rtmTickerSlice';
 import styled, { css } from 'styled-components';
 import {
+  getFontColorClass,
   changeLiteral,
   convertAccTradePrice,
   convertChangeRate,
@@ -21,7 +22,6 @@ interface SContainerStyleProps {
 
 interface SListItemStyleProps {
   align?: string;
-  literal?: string;
 }
 
 const CoinListItem = ({
@@ -41,7 +41,9 @@ const CoinListItem = ({
     () => marketList.filter((market) => market.market === code)[0],
     [code],
   );
+
   const literal = useMemo(() => changeLiteral(change), [change]);
+  const fontColorClass = useMemo(() => getFontColorClass(literal), [literal]);
   const changeRate = useMemo(
     () => convertChangeRate(change_rate),
     [change_rate],
@@ -61,10 +63,12 @@ const CoinListItem = ({
   return (
     <S.Container onClick={selectMarket} isSelected={selectedMarket === code}>
       <SE.KoreanName align="left">{korean_name}</SE.KoreanName>
-      <SE.TradePrice literal={literal}>
+      <SE.TradePrice className={fontColorClass}>
         {trade_price.toLocaleString()}
       </SE.TradePrice>
-      <SE.Change literal={literal}>{`${literal} ${changeRate}%`}</SE.Change>
+      <SE.Change
+        className={fontColorClass}
+      >{`${literal} ${changeRate}%`}</SE.Change>
       <SE.AccTradePrice>
         {convertAccTradePrice(acc_trade_price_24h).toLocaleString()}
         <S.PriceUnit>백만</S.PriceUnit>
@@ -108,12 +112,8 @@ const SE = {
   KoreanName: styled(S.ListItem)`
     font-weight: 500;
   `,
-  TradePrice: styled(S.ListItem)`
-    color: ${({ literal }) => (literal === '+' ? '#c84a31' : '#1261c4')};
-  `,
-  Change: styled(S.ListItem)`
-    color: ${({ literal }) => (literal === '+' ? '#c84a31' : '#1261c4')};
-  `,
+  TradePrice: styled(S.ListItem)``,
+  Change: styled(S.ListItem)``,
   AccTradePrice: styled(S.ListItem)``,
 };
 

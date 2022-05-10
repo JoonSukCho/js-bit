@@ -1,10 +1,11 @@
 import { createSelector } from '@reduxjs/toolkit';
 import React, { useEffect, useMemo, useRef } from 'react';
 import { RootState, useAppSelector } from 'store/config';
-import styled from 'styled-components';
+import styled, { css } from 'styled-components';
 import Article from './Article';
 import CoinCharts from 'components/CoinCharts';
 import {
+  getFontColorClass,
   changeLiteral,
   convertAccTradePrice,
   convertChangeRate,
@@ -56,7 +57,15 @@ const CoinSummary = () => {
             low_price,
             acc_trade_price_24h,
             acc_trade_volume_24h,
+            trade_price,
+            change,
+            change_rate,
+            change_price,
           } = selectedRtmSummary;
+
+          const literal = changeLiteral(change);
+          const changeRate = convertChangeRate(change_rate);
+          const fontColorClass = getFontColorClass(literal);
 
           return (
             <>
@@ -69,17 +78,24 @@ const CoinSummary = () => {
                 <S.CoinName>{korean_name}</S.CoinName>
                 <S.CoinCode>{selectedMarket}</S.CoinCode>
               </S.CoinNameContainer>
-              <div
-                style={{
-                  display: 'grid',
-                  gridTemplateColumns: '1fr 1fr',
-                  borderBottom: '1px solid #d4d6dc',
-                  padding: '18px 20px 14px',
-                }}
-              >
-                <div>
-                  <p>123</p>
-                </div>
+              <S.CoinSummaryContainer>
+                <S.CoinChangeSummary>
+                  <div>
+                    <S.TradePrice className={fontColorClass}>
+                      {trade_price.toLocaleString()}
+                    </S.TradePrice>
+                    <S.TradeUnit className={fontColorClass}>KRW</S.TradeUnit>
+                  </div>
+                  <div>
+                    <S.Change>전일대비</S.Change>
+                    <S.ChangeRate
+                      className={fontColorClass}
+                    >{`${literal} ${changeRate}%`}</S.ChangeRate>
+                    <S.ChangePrice className={fontColorClass}>{`${
+                      literal === '+' ? '▲' : '▼'
+                    } ${change_price.toLocaleString()}`}</S.ChangePrice>
+                  </div>
+                </S.CoinChangeSummary>
                 <div
                   style={{ display: 'grid', gridTemplateColumns: '1fr 1fr' }}
                 >
@@ -107,7 +123,7 @@ const CoinSummary = () => {
                     </p>
                   </div>
                 </div>
-              </div>
+              </S.CoinSummaryContainer>
               <CoinCharts />
             </>
           );
@@ -145,6 +161,35 @@ const S = {
     color: #666;
     margin-left: 0.125rem;
     font-weight: 400;
+  `,
+  CoinSummaryContainer: styled.div`
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    border-bottom: 1px solid #d4d6dc;
+    padding: 18px 20px 14px;
+  `,
+  CoinChangeSummary: styled.div`
+    display: flex;
+    flex-direction: column;
+  `,
+  TradePrice: styled.span`
+    font-size: 2rem;
+    font-weight: 500;
+  `,
+  TradeUnit: styled.span`
+    margin-left: 2px;
+  `,
+  Change: styled.span`
+    font-size: 0.82rem;
+    margin-right: 4px;
+    color: #666666;
+  `,
+  ChangeRate: styled.span`
+    font-size: 1rem;
+  `,
+  ChangePrice: styled.span`
+    font-size: 1rem;
+    margin-left: 6px;
   `,
 };
 

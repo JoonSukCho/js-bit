@@ -67,6 +67,10 @@ export const selectedRtmSummarySelector = createSelector(
         low_price,
         acc_trade_price_24h,
         acc_trade_volume_24h,
+        trade_price,
+        change,
+        change_rate,
+        change_price,
       } = filtered[0];
 
       return {
@@ -74,6 +78,10 @@ export const selectedRtmSummarySelector = createSelector(
         low_price,
         acc_trade_price_24h,
         acc_trade_volume_24h,
+        trade_price,
+        change,
+        change_rate,
+        change_price,
       };
     }
 
