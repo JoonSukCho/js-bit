@@ -20,11 +20,11 @@ const CoinOrderListItem = ({
 }: OrderBookUnitWithType) => {
   const toFixedAskSize = useMemo(
     () => ask_size.toLocaleString(undefined, { maximumFractionDigits: 3 }),
-    [ask_size],
+    [ask_size.toLocaleString(undefined, { maximumFractionDigits: 3 })],
   );
   const toFixedBidSize = useMemo(
     () => bid_size.toLocaleString(undefined, { maximumFractionDigits: 3 }),
-    [bid_size],
+    [bid_size.toLocaleString(undefined, { maximumFractionDigits: 3 })],
   );
   const askPrice = useMemo(() => ask_price, [ask_price]);
   const bidPrice = useMemo(() => bid_price, [bid_price]);
@@ -63,7 +63,7 @@ const S = {
     padding: 0.75rem 1rem;
     text-align: center;
 
-    border-top: 1px solid #fff;
+    border-bottom: 1px solid #fff;
     border-right: 1px solid #fff;
 
     text-align: ${({ align }) => align};
@@ -82,7 +82,7 @@ const SE = {
   // 매수/매도가
   Price: styled(S.ListItem)`
     font-size: 0.83rem;
-    font-weight: 500;
+    font-weight: 600;
     background-color: ${({ type }) =>
       type === 'ask' ? 'rgba(18,97,196,.08)' : 'rgba(200,74,49,.08)'};
   `,

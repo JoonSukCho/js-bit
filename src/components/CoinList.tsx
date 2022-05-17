@@ -48,7 +48,6 @@ const S = {
     height: 100%;
     box-sizing: border-box;
     background: #fff;
-    padding: 1rem 0;
 
     @media (min-width: 1024px) {
       max-width: 470px;
@@ -67,7 +66,7 @@ const S = {
   `,
   ListBody: styled.div`
     width: 100%;
-    height: 705px;
+    height: 735px;
     overflow: auto;
 
     &::-webkit-scrollbar {

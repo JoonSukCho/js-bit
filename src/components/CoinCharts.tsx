@@ -8,9 +8,10 @@ import { marketDayCandleSelector } from 'store/slices/marketSlice';
 import type { EChartsOption } from 'echarts';
 import EChartsReactCore from 'echarts-for-react/lib/core';
 import * as echarts from 'echarts/core';
-import { CandlestickChart } from 'echarts/charts';
+import { CandlestickChart, LineChart } from 'echarts/charts';
 import { TooltipComponent, GridComponent } from 'echarts/components';
 import { SVGRenderer } from 'echarts/renderers';
+import { calculateMA } from 'utils/market';
 
 /**
  * 캔들 보는법
@@ -20,38 +21,6 @@ import { SVGRenderer } from 'echarts/renderers';
  *
  * [시가, 종가, 저가, 고가] 형태로 series data를 넣어주면 된다.
  */
-
-const xAxisFakeData = (() => {
-  const data = [];
-  const now = new Date();
-
-  for (let i = 0; i < 100; i++) {
-    const year = now.getFullYear();
-    const month = now.getMonth() + 1;
-    const day = now.getDate();
-
-    data.push(`${year}-${month}-${day}`);
-    now.setDate(now.getDate() + 1);
-  }
-
-  return data;
-})();
-
-const seriesFakeData = (() => {
-  const data = [];
-
-  for (let i = 0; i < 100; i++) {
-    const series = [];
-
-    for (let j = 0; j < 4; j++) {
-      series.push(Math.floor(Math.random() * 50));
-    }
-
-    data.push(series);
-  }
-
-  return data;
-})();
 
 const CoinCharts = () => {
   const dispatch = useAppDispatch();
@@ -66,6 +35,14 @@ const CoinCharts = () => {
   } = useAppSelector(marketDayCandleSelector);
 
   const chartRef = useRef(null);
+  echarts.use([
+    SVGRenderer,
+    CandlestickChart,
+    LineChart,
+    TooltipComponent,
+    GridComponent,
+  ]);
+
   const [options, setOptions] = useState<EChartsOption>({
     tooltip: {
       trigger: 'axis',
@@ -75,32 +52,48 @@ const CoinCharts = () => {
     },
     yAxis: {},
     xAxis: {
-      data: xAxisFakeData,
+      data: [],
+    },
+    grid: {
+      containLabel: true,
     },
     series: [
+      // 캔들
       {
         type: 'candlestick',
-        data: seriesFakeData,
+        name: 'candle',
+        itemStyle: {
+          color: '#c84a31',
+          borderColor: '#c84a31',
+          color0: '#1261c4',
+          borderColor0: '#1261c4',
+        },
+      },
+      // MA 15
+      {
+        name: 'MA15',
+        type: 'line',
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+          width: 1,
+          color: '#c84a31',
+        },
+        data: [],
+      },
+      // MA 50
+      {
+        name: 'MA50',
+        type: 'line',
+        smooth: true,
+        showSymbol: false,
+        lineStyle: {
+          width: 1,
+        },
+        data: [],
       },
     ],
   });
-
-  const [resizeDetector, setResizeDetector] = useState(null);
-
-  useEffect(() => {
-    window.addEventListener('resize', () => {
-      setResizeDetector(!resizeDetector);
-    });
-  }, []);
-
-  useEffect(() => {
-    console.log(echarts.getInstanceById(chartRef.current));
-    const chart =
-      chartRef.current && echarts.getInstanceByDom(chartRef.current);
-    if (chart) {
-      chart.resize();
-    }
-  }, [resizeDetector]);
 
   useEffect(() => {
     if (selectedMarket.length > 0) {
@@ -115,30 +108,39 @@ const CoinCharts = () => {
 
   useEffect(() => {
     if (loadDayCandlesDone) {
-      //
       const sortedCandleData = [...dayCandles].reverse();
+      const candleDate = sortedCandleData.map(
+        (candle) => candle.candle_date_time_utc.split('T')[0],
+      );
+      const candlePrice = sortedCandleData.map((candle) => [
+        candle.opening_price,
+        candle.trade_price,
+        candle.low_price,
+        candle.high_price,
+      ]);
 
       setOptions((prev) => ({
         ...prev,
         xAxis: {
-          data: sortedCandleData.map((candle) => candle.candle_date_time_utc),
+          data: candleDate,
         },
         series: [
           {
-            type: 'candlestick',
-            data: sortedCandleData.map((candle) => [
-              candle.opening_price,
-              candle.trade_price,
-              candle.low_price,
-              candle.high_price,
-            ]),
+            ...prev.series[0],
+            data: candlePrice,
+          },
+          {
+            ...prev.series[1],
+            data: calculateMA(15, candlePrice),
+          },
+          {
+            ...prev.series[2],
+            data: calculateMA(50, candlePrice),
           },
         ],
       }));
     }
   }, [loadDayCandlesDone]);
-
-  echarts.use([SVGRenderer, CandlestickChart, TooltipComponent, GridComponent]);
 
   return (
     <div>

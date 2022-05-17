@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo, useState } from 'react';
 import { useAppDispatch, useAppSelector } from 'store/config';
 import { rtmOrderbookActions } from 'store/slices/rtmOrderbookSlice';
 import styled from 'styled-components';
@@ -35,9 +35,7 @@ const CoinOrderList = () => {
     <S.Container>
       <S.List>
         <S.ListHeader>
-          <S.ListHeaderItem>매도잔량</S.ListHeaderItem>
-          <S.ListHeaderItem>가격</S.ListHeaderItem>
-          <S.ListHeaderItem>매수잔량</S.ListHeaderItem>
+          <S.ListHeaderItem>일반호가</S.ListHeaderItem>
         </S.ListHeader>
         <S.ListBody>
           {!isConnected && <div>Loading...</div>}
@@ -73,25 +71,26 @@ export default CoinOrderList;
 
 const S = {
   Container: styled.div`
-    height: 800px;
+    height: 755px;
   `,
   List: styled(Article)`
     width: 100%;
     height: 100%;
     box-sizing: border-box;
     background: #fff;
-    padding: 1rem 0;
   `,
   ListHeader: styled.div`
     display: grid;
     grid-template-columns: repeat(3, 1fr);
-    font-size: 0.82rem;
+    font-size: 1.1rem;
+    color: #333;
+    font-weight: 500;
+    border-bottom: 1px solid #ddd;
   `,
   ListHeaderItem: styled.div`
     display: table-cell;
     padding: 0.75rem 1rem;
     text-align: center;
-    color: #666;
   `,
   ListBody: styled.div`
     width: 100%;

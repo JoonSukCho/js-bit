@@ -119,9 +119,7 @@ const CoinSummary = () => {
                     <S.SummaryArea>
                       거래대금(24H)
                       <S.Price>
-                        {acc_trade_price_24h.toLocaleString(undefined, {
-                          maximumFractionDigits: 3,
-                        })}
+                        {Math.round(acc_trade_price_24h).toLocaleString()}
                         <S.Suffix>KRW</S.Suffix>
                       </S.Price>
                     </S.SummaryArea>

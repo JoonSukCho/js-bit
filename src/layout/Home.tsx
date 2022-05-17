@@ -49,7 +49,7 @@ const S = {
   `,
   CoinListSection: styled.section`
     position: sticky;
-    height: 800px;
+    height: 780px;
     top: 88px; // Container의 margin-top + padding-top
 
     @media (max-width: 1024px) {
