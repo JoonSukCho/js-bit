@@ -31,22 +31,6 @@ const CoinSummary = () => {
     [selectedMarket],
   );
 
-  useEffect(() => {
-    const $CoinSummary = CoinSummaryRef.current;
-
-    if ($CoinSummary) {
-      $CoinSummary.addEventListener('resize', (e) => {
-        console.log('resize');
-      });
-
-      console.log($CoinSummary.offsetTop);
-    }
-
-    return () => {
-      console.log('clean up');
-    };
-  }, [CoinSummaryRef]);
-
   return (
     <Article ref={CoinSummaryRef}>
       {!isConnected ? (

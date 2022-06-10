@@ -67,8 +67,6 @@ const CoinOrderList = () => {
   );
 };
 
-export default CoinOrderList;
-
 const S = {
   Container: styled.div`
     height: 755px;
@@ -77,7 +75,6 @@ const S = {
     width: 100%;
     height: 100%;
     box-sizing: border-box;
-    background: #fff;
   `,
   ListHeader: styled.div`
     display: grid;
@@ -119,3 +116,5 @@ const S = {
     }
   `,
 };
+
+export default React.memo(CoinOrderList);

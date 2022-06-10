@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import styled from 'styled-components';
 
 import Header from 'components/Header';
+import Footer from 'components/Footer';
 import Article from 'components/Article';
 import CoinList from 'components/CoinList';
 import CoinSummary from 'components/CoinSummary';
@@ -24,7 +25,7 @@ const Home = () => {
           <CoinList />
         </S.CoinListSection>
       </S.Container>
-      <footer>footer</footer>
+      <Footer />
     </>
   );
 };
@@ -44,7 +45,6 @@ const S = {
   `,
   CoinDetailSection: styled.section`
     display: grid;
-    grid-template-rows: 1fr 1fr;
     min-height: 1200px;
   `,
   CoinListSection: styled.section`

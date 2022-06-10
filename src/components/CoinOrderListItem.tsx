@@ -44,8 +44,6 @@ const CoinOrderListItem = ({
   );
 };
 
-export default CoinOrderListItem;
-
 const S = {
   Container: styled.div`
     display: grid;
@@ -95,3 +93,5 @@ const SE = {
       `}
   `,
 };
+
+export default React.memo(CoinOrderListItem);
